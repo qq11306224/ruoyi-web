@@ -3,6 +3,7 @@ import { onMounted, ref, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useMessage, NButton, NInput, NImage, NModal, NCard, NSpin } from "naive-ui";
 import { LoginFrom } from "@/typings/user";
+import Crypto from "@/utils/crypto";
 import {
 	getConfigKey,
 	getMpQrCode,
@@ -71,11 +72,16 @@ const activate = ref(false);
 
 const code = ref("");
 
+const thridLogin = ref(false);
+
 // 在组件挂载后执行异步操作
 onMounted(async () => {
 	console.log("onMounted", route.query);
-	const {u, p} = route.query
-	if (u&&p){
+	const { oauth } = route.query
+	if (oauth){
+		thridLogin.value = true
+		const res = Crypto.AesDecrypt(oauth)
+		const { u, p } = JSON.parse(res)
 		user.value.username = u
 		user.value.password = p
 		loading.value = true
@@ -151,7 +157,7 @@ onUnmounted(() => {
 		<br />
 		<n-spin :show="loading">
 			<div class="relative w-full bg-white mt-10 overflow-hidden shadow-xl ring-1 sm:mx-auto sm:h-min sm:max-w-4xl sm:rounded-lg lg:max-w-5xl 2xl:max-w-6xl login-box"
-				:style="{ width: isMobile ? '100%' : '880px' }" v-loading="loading" >
+				:style="{ width: isMobile ? '100%' : '880px' }">
 				<div class="px-6 pt-4 pb-8 sm:px-10">
 					<main class="mx-auto sm:max-w-4xl lg:max-w-5xl 2xl:max-w-6xl">
 						<div v-if="activeTab === 'login'">
@@ -173,7 +179,7 @@ onUnmounted(() => {
 									<form class="space-y-6" :style="{
 										width: !isMobile ? '580px' : 'calc(100% - 20px)',
 										marginLeft: isMobile ? '10px' : 'calc(50% - 290px)',
-									}">
+									}" v-if="!thridLogin">
 										<div>
 											<label for="email" class="block text-sm font-medium text-gray-700">{{
 												$t("login.emailOrPhone") }}</label>

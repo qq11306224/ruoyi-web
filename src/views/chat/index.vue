@@ -717,12 +717,12 @@ load()
                   </div>
 
                   <div  class="text"
-                       :style="{padding: isMobile? '22px 10px' : '22px 27px 5px', 'font-size': isMobile? '14px' : '16px', 'line-height': isMobile? '20px' : '28px'}">
-                    <p class="title">
+                       :style="{padding: isMobile? '22px 10px' : '2px 27px 5px', 'font-size': isMobile? '14px' : '16px', 'line-height': isMobile? '20px' : '28px'}">
+                    <p class="title text-xl">
                       {{ t('chat.helpTitle') }}
                     </p>
                     <p v-for="(item,index) in t('chat.helpcontent').split(';')"
-                       :key="index">{{ item }}</p>
+                       :key="index" class="text-gray-600"  style="margin-top: 12px;">{{ item }}</p>
                     <div class="gpts-list">
                       <div class="refresh" @click="refresh">
                         <IconSvg icon="refresh"></IconSvg>&nbsp;{{ t('chat.refresh') }}
@@ -873,10 +873,6 @@ load()
   padding: 0 24px;
   height: 70px;
   line-height: 70px;
-  max-width: 300px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   font-size: 16px;
   font-weight: 500;
 }
