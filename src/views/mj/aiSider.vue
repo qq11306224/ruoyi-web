@@ -150,7 +150,7 @@ const handleSelect = (key: string) => {
           </n-tooltip>
         </a>
 
-        <a @click="urouter.push(`/knowledge`)"
+        <!-- <a @click="urouter.push(`/knowledge`)"
           class=" router-link-exact-active h-10 w-10 cursor-pointer rounded-xl bg-white duration-300 dark:bg-[#34373c] hover:bg-[#bbb] dark:hover:bg-[#555]">
           <n-tooltip placement="right" trigger="hover">
             <template #trigger>
@@ -209,7 +209,7 @@ const handleSelect = (key: string) => {
             </template>
             PPT
           </n-tooltip>
-        </a>
+        </a> -->
       </div>
 
       <div class="flex flex-col  space-y-2 ">

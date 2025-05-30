@@ -148,170 +148,153 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div id="app" >
-		<br /><br /><br /><br />
-		<div class="flex justify-center mt-8 md:mt-0">
-			<img style="border-radius: 60px; width: 120px; height: 120px" :src="logo" alt="Robot Icon"
-				class="h-12 w-fit hover:cursor-pointer md:h-16" />
-		</div>
-		<br />
-		<n-spin :show="loading">
-			<div class="relative w-full bg-white mt-10 overflow-hidden shadow-xl ring-1 sm:mx-auto sm:h-min sm:max-w-4xl sm:rounded-lg lg:max-w-5xl 2xl:max-w-6xl login-box"
-				:style="{ width: isMobile ? '100%' : '880px' }">
-				<div class="px-6 pt-4 pb-8 sm:px-10">
-					<main class="mx-auto sm:max-w-4xl lg:max-w-5xl 2xl:max-w-6xl">
-						<div v-if="activeTab === 'login'">
-							<!-- 登录表单 -->
-							<div class="flex flex-col justify-center my-4 space-y-8">
-								<div class="mx-auto w-full max-w-md">
-									<h2 class="text-3xl font-bold text-center text-gray-900">
-										{{ $t("login.login") }}
-									</h2>
-									<p class="mt-2 text-sm text-center text-gray-600 login-desc">
-										{{ $t("login.or") }}
-										<a @click="handleRegistBtnClick"
-											class="font-semibold text-teal-500 hover:text-teal-600">{{ $t("login.register")
-											}}</a>
-										{{ $t("login.andExperience") }}
-									</p>
-								</div>
-								<div class="mx-auto w-full max-w-sm">
-									<form class="space-y-6" :style="{
-										width: !isMobile ? '580px' : 'calc(100% - 20px)',
-										marginLeft: isMobile ? '10px' : 'calc(50% - 290px)',
-									}" v-if="!thridLogin">
-										<div>
-											<label for="email" class="block text-sm font-medium text-gray-700">{{
-												$t("login.emailOrPhone") }}</label>
-											<div class="mt-1">
-												<input id="email" v-model="user.username"
-													:allow-input="(val: string) => { return !/[^A-Za-z0-9_@.]/g.test(val) }"
-													maxlength="32" :placeholder="$t('login.enterEmailOrPhone')" name="email"
-													type="email" autocomplete="email" required
-													class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:border-teal-500 focus:outline-none focus:ring-teal-500" />
-											</div>
-										</div>
-										<div>
-											<label for="password" class="block text-sm font-medium text-gray-700">{{
-												$t("login.password") }}</label>
-											<div class="mt-1">
-												<input id="password" maxLength="16" v-model="user.password"
-													:placeholder="$t('login.enterPassword')" name="password" type="password"
-													required
-													class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:border-teal-500 focus:outline-none focus:ring-teal-500" />
-											</div>
-											<a style="color: #0084ff; font-weight: 500" href="#/resetpassword"
-												class="float-right mt-2 text-sm font-semibold text-teal-500 hover:text-teal-600">{{
-													$t("login.forgotPassword") }}</a>
-										</div>
-										<div class="footer-login">
-											<n-button :loading="loginLoading" @click="handleValidateButtonClick">{{
-												$t("login.login") }}</n-button>
+	<div id="app">
+		<div class="login-container">
+			<div class="login-content">
+				<!-- Logo -->
+				<div class="logo-container">
+					<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+						<path d="M24 4L35.8 10.5V23.5L24 30L12.2 23.5V10.5L24 4Z" stroke="#1677FF" stroke-width="2"/>
+						<text x="20" y="22" fill="#1677FF" font-size="16">AI</text>
+					</svg>
+				</div>
 
-											<n-button @click="handleWxLogin">微信登录</n-button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
+				<!-- Title and Subtitle -->
+				<div class="title-container">
+					<h1 class="main-title">AI 知识库</h1>
+					<p class="subtitle">知识的力量，智慧的源泉</p>
+				</div>
 
-						<!-- 扫码登录 -->
-						<n-modal
-							v-model:show="showModal"
-							title="请扫描下方二维码登录"
-							preset="card"
-							draggable
-							:style="{ width: '400px' }"
-							>
-							<n-image width="350" :src="qrCode" />
-						</n-modal>
-					</main>
+				<!-- Login Form -->
+				<div class="login-form">
+					<div class="input-group">
+						<input 
+							v-model="user.username"
+							type="text"
+							placeholder="请输入账号"
+							class="login-input"
+						/>
+					</div>
+					<div class="input-group">
+						<input 
+							v-model="user.password"
+							type="password"
+							placeholder="请输入密码"
+							class="login-input"
+						/>
+					</div>
+					<button 
+						class="login-button"
+						:loading="loginLoading"
+						@click="handleValidateButtonClick"
+					>
+						登录
+					</button>
 				</div>
 			</div>
-			<div class="footer">
-				<a target="_blank" style="color: #999999; font-size: 14px" href="https://beian.miit.gov.cn/">
-					&nbsp;{{ copyright }}
-				</a>
-			</div>
-		</n-spin>
-		<!-- <div v-if="!activate" id="specialDiv">
-			<p>
-				{{ $t("login.systemNotActivated") }}
-				<n-button size="small" secondary strong @click="showModal = true">{{
-					$t("login.activate")
-				}}</n-button>
-			</p>
-		</div> -->
+		</div>
 	</div>
-	<!-- <n-modal v-model:show="showModal">
-		<n-card
-			style="width: 600px"
-			:bordered="false"
-			size="huge"
-			role="dialog"
-			aria-modal="true"
-		>
-			<p class="text-sm text-center" style="margin-right: 10px">
-				{{ $t("login.enterAuthCode") }}
-			</p>
-			<br />
-			<div style="display: flex; align-items: center; justify-content: center">
-				<input
-					id="code"
-					v-model="code"
-					maxlength="32"
-					:placeholder="$t('login.activationCode')"
-					class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:border-teal-500 focus:outline-none focus:ring-teal-500"
-				/>
-				<n-button style="margin-left: 10px" @click="sysAuth()">{{
-					$t("login.activate")
-				}}</n-button>
-			</div>
-		</n-card>
-	</n-modal> -->
 </template>
 
 <style scoped>
 #app {
 	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	/* background-image: url('@/assets/background.jpg'); */
-	background-color: #141718;
-	background-size: cover;
-	background-repeat: no-repeat;
-}
-
-.footer {
-	display: flex;
-	justify-content: center;
 	align-items: center;
-	text-align: center;
+	justify-content: center;
+	min-height: 100vh;
+	background-color: #ffffff;
+}
+
+.login-container {
 	width: 100%;
-	margin-top: auto;
+	max-width: 400px;
+	padding: 20px;
 }
 
-.custom-card {
-	width: 500px;
+.login-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 24px;
 }
 
-input {
-	color: black !important;
+.logo-container {
+	margin-bottom: 16px;
 }
 
-#specialDiv {
-	position: relative;
-	/* 使内部的绝对定位元素相对定位 */
+.title-container {
+	text-align: center;
+	margin-bottom: 32px;
 }
 
-#specialDiv p {
-	position: absolute;
-	/* 绝对定位 */
-	bottom: 0;
-	/* 将元素对齐到底部 */
-	right: 0;
-	/* 将元素对齐到右边 */
-	margin: 0;
-	/* 去除默认的段落外边距 */
+.main-title {
+	font-size: 28px;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 8px;
+}
+
+.subtitle {
+	font-size: 16px;
+	color: #666;
+}
+
+.login-form {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.input-group {
+	width: 100%;
+}
+
+.login-input {
+	width: 100%;
+	height: 40px;
+	padding: 8px 12px;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	font-size: 14px;
+	color: #333;
+	background-color: #fff;
+	transition: all 0.3s;
+}
+
+.login-input:focus {
+	outline: none;
+	border-color: #1677FF;
+	box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
+}
+
+.login-input::placeholder {
+	color: #9ca3af;
+}
+
+.login-button {
+	width: 100%;
+	height: 40px;
+	background-color: #1677FF;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.login-button:hover {
+	background-color: #0958d9;
+}
+
+.login-button:active {
+	background-color: #0958d9;
+}
+
+.login-button[loading] {
+	opacity: 0.7;
+	cursor: not-allowed;
 }
 </style>
